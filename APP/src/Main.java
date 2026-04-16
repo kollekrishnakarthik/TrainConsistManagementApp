@@ -1,35 +1,22 @@
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 
 public class Main {
     public static void main(String[] args) {
 
-        LinkedList<String> train = new LinkedList<>();
+        // Step 1: Create LinkedHashSet for train formation
+        LinkedHashSet<String> train = new LinkedHashSet<>();
 
         // Step 2: Add bogies
         train.add("Engine");
         train.add("Sleeper");
-        train.add("AC");
         train.add("Cargo");
         train.add("Guard");
 
-        System.out.println("Initial Train Consist:");
-        System.out.println(train);
+        // Step 3: Add duplicate bogie intentionally
+        train.add("Sleeper"); // Duplicate (will be ignored)
 
-        // Step 3: Insert Pantry Car at position 2 (index starts from 0)
-        train.add(2, "Pantry Car");
-
-        System.out.println("\nAfter adding Pantry Car at position 2:");
-        System.out.println(train);
-
-        // Step 4: Remove first and last bogies
-        train.removeFirst();
-        train.removeLast();
-
-        System.out.println("\nAfter removing first and last bogies:");
-        System.out.println(train);
-
-        // Step 5: Final train consist
-        System.out.println("\nFinal Train Consist:");
+        // Step 4: Display final train formation
+        System.out.println("Final Train Formation (Insertion Order Preserved):");
         System.out.println(train);
     }
 }
