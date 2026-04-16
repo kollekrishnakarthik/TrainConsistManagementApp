@@ -4,40 +4,40 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MainTest {
 
     @Test
-    void testSort_BasicSorting() {
-        int[] arr = {72, 56, 24, 70, 60};
-        MainTest.bubbleSort(arr);
-        assertArrayEquals(new int[]{24, 56, 60, 70, 72}, arr);
+    void testSort_BasicAlphabeticalSorting() {
+        String[] input = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
+        MainTest.sortBogieNames(input);
+        assertArrayEquals(new String[]{"AC Chair", "First Class", "General", "Luxury", "Sleeper"}, input);
+    }
+
+    @Test
+    void testSort_UnsortedInput() {
+        String[] input = {"Luxury", "General", "Sleeper", "AC Chair"};
+        MainTest.sortBogieNames(input);
+        assertArrayEquals(new String[]{"AC Chair", "General", "Luxury", "Sleeper"}, input);
     }
 
     @Test
     void testSort_AlreadySortedArray() {
-        int[] arr = {24, 56, 60, 70, 72};
-        MainTest.bubbleSort(arr);
-        assertArrayEquals(new int[]{24, 56, 60, 70, 72}, arr);
+        String[] input = {"AC Chair", "First Class", "General"};
+        MainTest.sortBogieNames(input);
+        assertArrayEquals(new String[]{"AC Chair", "First Class", "General"}, input);
     }
 
     @Test
-    void testSort_DuplicateValues() {
-        int[] arr = {72, 56, 56, 24};
-        MainTest.bubbleSort(arr);
-        assertArrayEquals(new int[]{24, 56, 56, 72}, arr);
+    void testSort_DuplicateBogieNames() {
+        String[] input = {"Sleeper", "AC Chair", "Sleeper", "General"};
+        MainTest.sortBogieNames(input);
+        assertArrayEquals(new String[]{"AC Chair", "General", "Sleeper", "Sleeper"}, input);
     }
 
     @Test
     void testSort_SingleElementArray() {
-        int[] arr = {50};
-        MainTest.bubbleSort(arr);
-        assertArrayEquals(new int[]{50}, arr);
+        String[] input = {"Sleeper"};
+        MainTest.sortBogieNames(input);
+        assertArrayEquals(new String[]{"Sleeper"}, input);
     }
 
-    @Test
-    void testSort_AllEqualValues() {
-        int[] arr = {40, 40, 40};
-        MainTest.bubbleSort(arr);
-        assertArrayEquals(new int[]{40, 40, 40}, arr);
-    }
-
-    private static void bubbleSort(int[] arr) {
+    private static void sortBogieNames(String[] input) {
     }
 }
