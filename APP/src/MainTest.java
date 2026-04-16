@@ -4,37 +4,40 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MainTest {
 
     @Test
-    void testCargo_SafeAssignment() {
-        GoodsBogie b = new GoodsBogie("Cylindrical");
-        b.assignCargo("Petroleum");
-        assertEquals("Petroleum", b.getCargo());
+    void testSort_BasicSorting() {
+        int[] arr = {72, 56, 24, 70, 60};
+        MainTest.bubbleSort(arr);
+        assertArrayEquals(new int[]{24, 56, 60, 70, 72}, arr);
     }
 
     @Test
-    void testCargo_UnsafeAssignmentHandled() {
-        GoodsBogie b = new GoodsBogie("Rectangular");
-        b.assignCargo("Petroleum");
-        assertNull(b.getCargo());
+    void testSort_AlreadySortedArray() {
+        int[] arr = {24, 56, 60, 70, 72};
+        MainTest.bubbleSort(arr);
+        assertArrayEquals(new int[]{24, 56, 60, 70, 72}, arr);
     }
 
     @Test
-    void testCargo_CargoNotAssignedAfterFailure() {
-        GoodsBogie b = new GoodsBogie("Rectangular");
-        b.assignCargo("Petroleum");
-        assertNull(b.getCargo());
+    void testSort_DuplicateValues() {
+        int[] arr = {72, 56, 56, 24};
+        MainTest.bubbleSort(arr);
+        assertArrayEquals(new int[]{24, 56, 56, 72}, arr);
     }
 
     @Test
-    void testCargo_ProgramContinuesAfterException() {
-        GoodsBogie b = new GoodsBogie("Rectangular");
-        b.assignCargo("Petroleum");
-        b.assignCargo("Coal");
-        assertEquals("Coal", b.getCargo());
+    void testSort_SingleElementArray() {
+        int[] arr = {50};
+        MainTest.bubbleSort(arr);
+        assertArrayEquals(new int[]{50}, arr);
     }
 
     @Test
-    void testCargo_FinallyBlockExecution() {
-        GoodsBogie b = new GoodsBogie("Rectangular");
-        assertDoesNotThrow(() -> b.assignCargo("Petroleum"));
+    void testSort_AllEqualValues() {
+        int[] arr = {40, 40, 40};
+        MainTest.bubbleSort(arr);
+        assertArrayEquals(new int[]{40, 40, 40}, arr);
+    }
+
+    private static void bubbleSort(int[] arr) {
     }
 }
