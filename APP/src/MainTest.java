@@ -4,66 +4,64 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MainTest {
 
-    private List<GoodsBogie> validBogies() {
+    // Sample data
+    private List<Bogie> sampleBogies() {
         return Arrays.asList(
-                new GoodsBogie("Cylindrical", "Petroleum"),
-                new GoodsBogie("Open", "Coal"),
-                new GoodsBogie("Box", "Grain")
+                new Bogie("Sleeper", 72),
+                new Bogie("AC Chair", 54),
+                new Bogie("First Class", 36),
+                new Bogie("Sleeper", 80)
         );
     }
 
-    private List<GoodsBogie> invalidCylindrical() {
-        return Arrays.asList(
-                new GoodsBogie("Cylindrical", "Coal"),
-                new GoodsBogie("Open", "Grain")
-        );
+    // Large dataset
+    private List<Bogie> largeDataset() {
+        List<Bogie> list = new ArrayList<>();
+        for (int i = 0; i < 10000; i++) {
+            list.add(new Bogie("Sleeper", i % 100));
+        }
+        return list;
     }
 
-    private List<GoodsBogie> nonCylindricalOnly() {
-        return Arrays.asList(
-                new GoodsBogie("Open", "Coal"),
-                new GoodsBogie("Box", "Grain")
-        );
-    }
-
-    private List<GoodsBogie> mixedWithViolation() {
-        return Arrays.asList(
-                new GoodsBogie("Cylindrical", "Petroleum"),
-                new GoodsBogie("Cylindrical", "Coal"),
-                new GoodsBogie("Box", "Grain")
-        );
-    }
-
-    private List<GoodsBogie> emptyList() {
-        return Collections.emptyList();
-    }
-
+    // Loop filtering test
     @Test
-    void testSafety_AllBogiesValid() {
-        assertTrue(MainTest.isTrainSafe(validBogies()));
+    void testLoopFilteringLogic() {
+        List<Bogie> result = Main.filterWithLoop(sampleBogies());
+        assertTrue(result.stream().allMatch(b -> b.getCapacity() > 60));
     }
 
-    private static boolean isTrainSafe(List<GoodsBogie> goodsBogies) {
-        return false;
-    }
-
+    // Stream filtering test
     @Test
-    void testSafety_CylindricalWithInvalidCargo() {
-        assertFalse(MainTest.isTrainSafe(invalidCylindrical()));
+    void testStreamFilteringLogic() {
+        List<Bogie> result = Main.filterWithStream(sampleBogies());
+        assertTrue(result.stream().allMatch(b -> b.getCapacity() > 60));
     }
 
+    // Compare loop and stream results
     @Test
-    void testSafety_NonCylindricalBogiesAllowed() {
-        assertTrue(MainTest.isTrainSafe(nonCylindricalOnly()));
+    void testLoopAndStreamResultsMatch() {
+        List<Bogie> loopResult = Main.filterWithLoop(sampleBogies());
+        List<Bogie> streamResult = Main.filterWithStream(sampleBogies());
+
+        assertEquals(loopResult.size(), streamResult.size());
     }
 
+    // Execution time test
     @Test
-    void testSafety_MixedBogiesWithViolation() {
-        assertFalse(MainTest.isTrainSafe(mixedWithViolation()));
+    void testExecutionTimeMeasurement() {
+        long loopTime = Main.measureLoopTime(sampleBogies());
+        long streamTime = Main.measureStreamTime(sampleBogies());
+
+        assertTrue(loopTime > 0);
+        assertTrue(streamTime > 0);
     }
 
+    // Large dataset test
     @Test
-    void testSafety_EmptyBogieList() {
-        assertTrue(MainTest.isTrainSafe(emptyList()));
+    void testLargeDatasetProcessing() {
+        List<Bogie> data = largeDataset();
+        List<Bogie> result = Main.filterWithStream(data);
+
+        assertTrue(result.stream().allMatch(b -> b.getCapacity() > 60));
     }
 }
