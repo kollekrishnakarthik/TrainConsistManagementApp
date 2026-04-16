@@ -4,64 +4,54 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MainTest {
 
-    // Sample data
-    private List<Bogie> sampleBogies() {
-        return Arrays.asList(
-                new Bogie("Sleeper", 72),
-                new Bogie("AC Chair", 54),
-                new Bogie("First Class", 36),
-                new Bogie("Sleeper", 80)
-        );
-    }
-
-    // Large dataset
-    private List<Bogie> largeDataset() {
-        List<Bogie> list = new ArrayList<>();
-        for (int i = 0; i < 10000; i++) {
-            list.add(new Bogie("Sleeper", i % 100));
-        }
-        return list;
-    }
-
-    // Loop filtering test
     @Test
-    void testLoopFilteringLogic() {
-        List<Bogie> result = Main.filterWithLoop(sampleBogies());
-        assertTrue(result.stream().allMatch(b -> b.getCapacity() > 60));
+    void testException_ValidCapacityCreation() {
+        assertDoesNotThrow(() -> {
+            PassengerBogie b = new PassengerBogie("Sleeper", 72);
+            assertEquals(72, b.getCapacity());
+        });
     }
 
-    // Stream filtering test
     @Test
-    void testStreamFilteringLogic() {
-        List<Bogie> result = Main.filterWithStream(sampleBogies());
-        assertTrue(result.stream().allMatch(b -> b.getCapacity() > 60));
+    void testException_NegativeCapacityThrowsException() {
+        Exception ex = assertThrows(InvalidCapacityException.class, () -> {
+            new PassengerBogie("Sleeper", -10);
+        });
+        assertEquals("Capacity must be greater than zero", ex.getMessage());
     }
 
-    // Compare loop and stream results
     @Test
-    void testLoopAndStreamResultsMatch() {
-        List<Bogie> loopResult = Main.filterWithLoop(sampleBogies());
-        List<Bogie> streamResult = Main.filterWithStream(sampleBogies());
-
-        assertEquals(loopResult.size(), streamResult.size());
+    void testException_ZeroCapacityThrowsException() {
+        Exception ex = assertThrows(InvalidCapacityException.class, () -> {
+            new PassengerBogie("Sleeper", 0);
+        });
+        assertEquals("Capacity must be greater than zero", ex.getMessage());
     }
 
-    // Execution time test
     @Test
-    void testExecutionTimeMeasurement() {
-        long loopTime = Main.measureLoopTime(sampleBogies());
-        long streamTime = Main.measureStreamTime(sampleBogies());
-
-        assertTrue(loopTime > 0);
-        assertTrue(streamTime > 0);
+    void testException_ExceptionMessageValidation() {
+        Exception ex = assertThrows(InvalidCapacityException.class, () -> {
+            new PassengerBogie("AC Chair", 0);
+        });
+        assertEquals("Capacity must be greater than zero", ex.getMessage());
     }
 
-    // Large dataset test
     @Test
-    void testLargeDatasetProcessing() {
-        List<Bogie> data = largeDataset();
-        List<Bogie> result = Main.filterWithStream(data);
+    void testException_ObjectIntegrityAfterCreation() throws Exception {
+        PassengerBogie b = new PassengerBogie("First Class", 36);
+        assertEquals("First Class", b.getType());
+        assertEquals(36, b.getCapacity());
+    }
 
-        assertTrue(result.stream().allMatch(b -> b.getCapacity() > 60));
+    @Test
+    void testException_MultipleValidBogiesCreation() {
+        assertDoesNotThrow(() -> {
+            List<PassengerBogie> list = Arrays.asList(
+                    new PassengerBogie("Sleeper", 72),
+                    new PassengerBogie("AC Chair", 54),
+                    new PassengerBogie("First Class", 36)
+            );
+            assertEquals(3, list.size());
+        });
     }
 }
