@@ -1,39 +1,14 @@
 import org.junit.jupiter.api.Test;
 import java.util.*;
+import java.util.function.BooleanSupplier;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-//class Bogie {
-//    String name;
-//    int capacity;
-//
-//    Bogie(String name, int capacity) {
-//        this.name = name;
-//        this.capacity = capacity;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public int getCapacity() {
-//        return capacity;
-//    }
-//
-//    @Override
-//    public boolean equals(Object o) {
-//        if(this == o) return true;
-//        if(o == null || getClass() != o.getClass()) return false;
-//        Bogie bogie = (Bogie) o;
-//        return capacity == bogie.capacity && Objects.equals(name, bogie.name);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(name, capacity);
-//    }
-//}
-
 public class MainTest {
+
+    // -------------------------------
+    // Helper Methods (UC10)
+    // -------------------------------
 
     private List<Bogie> createBogiesMultiple() {
         return Arrays.asList(
@@ -51,13 +26,17 @@ public class MainTest {
         return Collections.emptyList();
     }
 
+    // -------------------------------
+    // UC10: Stream & Reduce Test Cases
+    // -------------------------------
+
     @Test
     void testReduce_TotalSeatCalculation() {
         List<Bogie> bogies = createBogiesMultiple();
         int total = bogies.stream()
                 .map(Bogie::getCapacity)
                 .reduce(0, Integer::sum);
-        assertEquals(72 + 54 + 36, total);
+        assertEquals(162, total);
     }
 
     @Test
@@ -102,11 +81,13 @@ public class MainTest {
         int total = bogies.stream()
                 .map(Bogie::getCapacity)
                 .reduce(0, Integer::sum);
-        int sumManual = 0;
+
+        int manualSum = 0;
         for (Bogie b : bogies) {
-            sumManual += b.getCapacity();
+            manualSum += b.getCapacity();
         }
-        assertEquals(sumManual, total);
+
+        assertEquals(manualSum, total);
     }
 
     @Test
@@ -119,5 +100,64 @@ public class MainTest {
                 .reduce(0, Integer::sum);
 
         assertEquals(before, bogies);
+    }
+
+    // -------------------------------
+    // UC11: REGEX VALIDATION TEST CASES
+    // -------------------------------
+
+    @Test
+    void testRegex_ValidTrainID() {
+        assertTrue(MainTest.isValidTrainId("TRN-1234"));
+    }
+
+    @Test
+    void testRegex_InvalidTrainIDFormat() {
+        assertFalse(MainTest.isValidTrainId("TRAIN12"));
+        assertFalse(MainTest.isValidTrainId("TRN12A"));
+        assertFalse(MainTest.isValidTrainId("1234-TRN"));
+    }
+
+    @Test
+    void testRegex_TrainIDDigitLengthValidation() {
+        assertFalse(MainTest.isValidTrainId("TRN-123"));
+        assertFalse(MainTest.isValidTrainId("TRN-12345"));
+    }
+
+    @Test
+    void testRegex_ValidCargoCode() {
+        assertTrue(MainTest.isValidCargoCode("PET-AB"));
+    }
+
+    @Test
+    void testRegex_InvalidCargoCodeFormat() {
+        assertFalse(MainTest.isValidCargoCode("PET-ab"));
+        assertFalse(MainTest.isValidCargoCode("PET123"));
+        assertFalse(MainTest.isValidCargoCode("AB-PET"));
+    }
+
+    @Test
+    void testRegex_CargoCodeUppercaseValidation() {
+        equals(MainTest.isValidCargoCode("PET-Ab"));
+    }
+
+    @Test
+    void testRegex_EmptyInputHandling() {
+        assertFalse(MainTest.isValidTrainId(""));
+        assertFalse(MainTest.isValidCargoCode(""));
+    }
+
+    private static BooleanSupplier isValidCargoCode(String string) {
+        return null;
+    }
+
+    private static boolean isValidTrainId(String string) {
+        return false;
+    }
+
+    @Test
+    void testRegex_ExactPatternMatch() {
+        assertFalse(MainTest.isValidTrainId("TRN-1234X"));
+        assertFalse(MainTest.isValidCargoCode("PET-ABC"));
     }
 }
