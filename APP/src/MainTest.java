@@ -4,36 +4,48 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MainTest {
 
     @Test
-    void testSearch_BogieFound() {
+    void testBinarySearch_BogieFound() {
         String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        assertTrue(MainTest.linearSearch(arr, "BG309"));
+        assertTrue(MainTest.binarySearch(arr, "BG309"));
     }
 
     @Test
-    void testSearch_BogieNotFound() {
+    void testBinarySearch_BogieNotFound() {
         String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        assertFalse(MainTest.linearSearch(arr, "BG999"));
+        assertFalse(MainTest.binarySearch(arr, "BG999"));
     }
 
     @Test
-    void testSearch_FirstElementMatch() {
+    void testBinarySearch_FirstElementMatch() {
         String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        assertTrue(MainTest.linearSearch(arr, "BG101"));
+        assertTrue(MainTest.binarySearch(arr, "BG101"));
     }
 
     @Test
-    void testSearch_LastElementMatch() {
+    void testBinarySearch_LastElementMatch() {
         String[] arr = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        assertTrue(MainTest.linearSearch(arr, "BG550"));
+        assertTrue(MainTest.binarySearch(arr, "BG550"));
     }
 
     @Test
-    void testSearch_SingleElementArray() {
+    void testBinarySearch_SingleElementArray() {
         String[] arr = {"BG101"};
-        assertTrue(MainTest.linearSearch(arr, "BG101"));
+        assertTrue(MainTest.binarySearch(arr, "BG101"));
     }
 
-    private static boolean linearSearch(String[] arr, String bg101) {
+    @Test
+    void testBinarySearch_EmptyArray() {
+        String[] arr = {};
+        assertFalse(MainTest.binarySearch(arr, "BG101"));
+    }
+
+    @Test
+    void testBinarySearch_UnsortedInputHandled() {
+        String[] arr = {"BG309", "BG101", "BG550", "BG205", "BG412"};
+        assertTrue(MainTest.binarySearch(arr, "BG205"));
+    }
+
+    private static boolean binarySearch(String[] arr, String bg205) {
         return false;
     }
 }
