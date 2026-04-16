@@ -1,7 +1,6 @@
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
-// Bogie class
 class Bogie {
     String name;
     int capacity;
@@ -11,30 +10,44 @@ class Bogie {
         this.capacity = capacity;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
     @Override
     public String toString() {
-        return name + "(" + capacity + ")";
+        return name + " (" + capacity + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Bogie bogie = (Bogie) o;
+        return capacity == bogie.capacity && name.equals(bogie.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode() + capacity;
     }
 }
 
 public class Main {
     public static void main(String[] args) {
-
-        // Step 1: Create bogie list
         List<Bogie> bogies = new ArrayList<>();
         bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 60));
-        bogies.add(new Bogie("Sleeper", 70));
-        bogies.add(new Bogie("First Class", 24));
+        bogies.add(new Bogie("AC Chair", 54));
+        bogies.add(new Bogie("First Class", 36));
 
-        // Step 2: Group bogies by type (name)
-        Map<String, List<Bogie>> grouped = bogies.stream()
-                .collect(Collectors.groupingBy(b -> b.name));
+        int totalSeats = bogies.stream()
+                .map(Bogie::getCapacity)
+                .reduce(0, Integer::sum);
 
-        // Step 3: Display grouped result
-        System.out.println("Grouped Bogies:");
-        for (Map.Entry<String, List<Bogie>> entry : grouped.entrySet()) {
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
-        }
+        System.out.println("Total seating capacity of the train: " + totalSeats);
     }
 }
